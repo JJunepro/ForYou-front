@@ -1,0 +1,145 @@
+.common-code-page {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.page-header h1 {
+  color: #1a202c;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: #718096;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.tab-navigation {
+  display: flex;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.tab-button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #718096;
+  position: relative;
+}
+
+.tab-button:hover {
+  background: #f7fafc;
+  color: #4a5568;
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.tab-button.active:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+}
+
+.tab-icon {
+  font-size: 1.2rem;
+}
+
+.tab-text {
+  font-weight: 600;
+}
+
+.tab-content {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  min-height: 600px;
+}
+
+/* 태블릿 (768px ~ 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .common-code-page {
+    padding: 24px;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .page-header p {
+    font-size: 1rem;
+  }
+  
+  .tab-button {
+    padding: 16px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .tab-icon {
+    font-size: 1.1rem;
+  }
+}
+
+/* 모바일 (767px 이하) */
+@media (max-width: 767px) {
+  .common-code-page {
+    padding: 16px;
+  }
+  
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .page-header p {
+    font-size: 0.9rem;
+  }
+  
+  .tab-navigation {
+    flex-direction: column;
+  }
+  
+  .tab-button {
+    padding: 16px 20px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .tab-button:last-child {
+    border-bottom: none;
+  }
+  
+  .tab-button.active {
+    border-bottom-color: transparent;
+  }
+  
+  .tab-icon {
+    font-size: 1rem;
+  }
+  
+  .tab-content {
+    min-height: 500px;
+  }
+}

@@ -1,0 +1,267 @@
+.admin-container {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-header {
+  background: white;
+  border-bottom: 1px solid #e1e5e9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-content h1 {
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.page-title {
+  color: #667eea;
+  font-size: 16px;
+  font-weight: 500;
+  background: #f0f4ff;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info {
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.logout-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #c82333;
+}
+
+.admin-layout {
+  display: flex;
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.admin-sidebar {
+  background: white;
+  border-right: 1px solid #e1e5e9;
+  width: 250px;
+  min-height: calc(100vh - 64px);
+  position: sticky;
+  top: 64px;
+}
+
+.sidebar-content {
+  padding: 20px 0;
+}
+
+.sidebar-button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  text-align: left;
+}
+
+.sidebar-button:hover {
+  background: #f8f9fa;
+  color: #333;
+}
+
+.sidebar-button.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-right: 3px solid #5a67d8;
+}
+
+.sidebar-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-label {
+  font-weight: 600;
+}
+
+.admin-main {
+  flex: 1;
+  background: #f5f7fa;
+  min-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.coming-soon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: white;
+  margin: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  color: #718096;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* 로딩 스피너 */
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.loading-spinner::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 태블릿 (768px ~ 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .admin-sidebar {
+    width: 200px;
+  }
+  
+  .sidebar-button {
+    padding: 14px 20px;
+    font-size: 13px;
+  }
+  
+  .sidebar-label {
+    display: none;
+  }
+  
+  .sidebar-icon {
+    font-size: 18px;
+    width: 24px;
+  }
+}
+
+/* 모바일 (767px 이하) */
+@media (max-width: 767px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+  
+  .admin-sidebar {
+    width: 100%;
+    min-height: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid #e1e5e9;
+  }
+  
+  .sidebar-content {
+    display: flex;
+    padding: 0;
+    overflow-x: auto;
+  }
+  
+  .sidebar-button {
+    flex-shrink: 0;
+    padding: 12px 16px;
+    font-size: 12px;
+    min-width: 80px;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .sidebar-icon {
+    font-size: 16px;
+    width: auto;
+  }
+  
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 500;
+  }
+  
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .header-content h1 {
+    font-size: 18px;
+  }
+  
+  .page-title {
+    font-size: 12px;
+    padding: 2px 8px;
+  }
+  
+  .user-info {
+    font-size: 12px;
+  }
+  
+  .logout-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
