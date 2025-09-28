@@ -140,19 +140,27 @@ export interface MenuRequest {
   useYn: 'Y' | 'N';
 }
 
-// 로그인 관련 타입
+// 로그인 관련 타입 정의
 export interface LoginRequest {
-  memEmail: string;        // 이메일 (계정)
-  memPwd: string;          // 비밀번호
+  memEmail: string;        // 이메일 (계정) - 로그인 시 사용자 식별자
+  memPwd: string;          // 비밀번호 - 사용자 인증용
 }
 
+// 로그인 성공 응답 타입 (향후 JWT 토큰 방식 구현 시 사용)
 export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    memKey: number;
-    memEmail: string;
-    memNick: string;
-    memStatus: 'Y' | 'N';
+  accessToken: string;     // 액세스 토큰 - API 호출 시 인증용
+  refreshToken: string;    // 리프레시 토큰 - 액세스 토큰 갱신용
+  user: {                  // 로그인한 사용자 정보
+    memKey: number;        // 회원 고유 키
+    memEmail: string;      // 회원 이메일
+    memNick: string;       // 회원 닉네임
+    memStatus: 'Y' | 'N';  // 회원 상태 (Y: 활성, N: 비활성)
   };
+}
+
+// 회원가입 요청 타입 정의
+export interface SignupRequest {
+  memEmail: string;        // 이메일 - 계정으로 사용될 이메일 주소
+  memNick: string;         // 닉네임 - 사용자 표시명
+  memPwd: string;          // 비밀번호 - 암호화되어 저장됨
 }
