@@ -6,6 +6,7 @@ import type {
   CommonCodeDetailRequest
 } from '@/types/api';
 import CommonCodeForm from './CommonCodeForm';
+import { commonCodeService } from '@/services/commonCodeService';
 import '@/styles/components/CommonCodeManagement.css';
 
 interface CommonCodeManagementProps {
@@ -14,118 +15,59 @@ interface CommonCodeManagementProps {
 
 const CommonCodeManagement: React.FC<CommonCodeManagementProps> = ({ type }) => {
   const [items, setItems] = useState<(CommonCodeMaster | CommonCodeDetail)[]>([]);
+  const [masterGroups, setMasterGroups] = useState<CommonCodeMaster[]>([]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<CommonCodeMaster | CommonCodeDetail | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGrpCd, setSelectedGrpCd] = useState('');
 
-  // 임시 데이터 (실제로는 API에서 가져와야 함)
-  const mockMasterData: CommonCodeMaster[] = [
-    {
-      grpCd: 'USER_TYPE',
-      grpNm: '사용자 유형',
-      grpCate: 'SYSTEM',
-      grpParentCd: '',
-      grpDesc: '시스템 사용자 유형 분류',
-      dspSeq: 1,
-      useYn: 'Y',
-      firDt: '2024-01-01T00:00:00',
-      firId: 1,
-      lstDt: '2024-01-01T00:00:00',
-      lstId: 1
-    },
-    {
-      grpCd: 'STATUS',
-      grpNm: '상태 코드',
-      grpCate: 'SYSTEM',
-      grpParentCd: '',
-      grpDesc: '일반적인 상태 코드',
-      dspSeq: 2,
-      useYn: 'Y',
-      firDt: '2024-01-01T00:00:00',
-      firId: 1,
-      lstDt: '2024-01-01T00:00:00',
-      lstId: 1
-    }
-  ];
-
-  const mockDetailData: CommonCodeDetail[] = [
-    {
-      grpCd: 'USER_TYPE',
-      cd: 'ADMIN',
-      parentCd: '',
-      cdNm: '관리자',
-      cdDesc: '시스템 관리자',
-      dspSeq: 1,
-      useYn: 'Y',
-      firDt: '2024-01-01T00:00:00',
-      firId: 1,
-      lstDt: '2024-01-01T00:00:00',
-      lstId: 1
-    },
-    {
-      grpCd: 'USER_TYPE',
-      cd: 'USER',
-      parentCd: '',
-      cdNm: '일반 사용자',
-      cdDesc: '일반 사용자',
-      dspSeq: 2,
-      useYn: 'Y',
-      firDt: '2024-01-01T00:00:00',
-      firId: 1,
-      lstDt: '2024-01-01T00:00:00',
-      lstId: 1
-    },
-    {
-      grpCd: 'STATUS',
-      cd: 'ACTIVE',
-      parentCd: '',
-      cdNm: '활성',
-      cdDesc: '활성 상태',
-      dspSeq: 1,
-      useYn: 'Y',
-      firDt: '2024-01-01T00:00:00',
-      firId: 1,
-      lstDt: '2024-01-01T00:00:00',
-      lstId: 1
-    },
-    {
-      grpCd: 'STATUS',
-      cd: 'INACTIVE',
-      parentCd: '',
-      cdNm: '비활성',
-      cdDesc: '비활성 상태',
-      dspSeq: 2,
-      useYn: 'Y',
-      firDt: '2024-01-01T00:00:00',
-      firId: 1,
-      lstDt: '2024-01-01T00:00:00',
-      lstId: 1
-    }
-  ];
-
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      // TODO: 실제 API 호출
-      setTimeout(() => {
-        if (type === 'master') {
-          setItems(mockMasterData);
+      if (type === 'master') {
+        const data = await commonCodeService.getAllCodeMst();
+        setItems(data);
+        setMasterGroups(data);
+      } else {
+        if (selectedGrpCd) {
+          const data = await commonCodeService.getCodeDtlByGrpCd(selectedGrpCd);
+          setItems(data);
         } else {
-          let filteredData = mockDetailData;
-          if (selectedGrpCd) {
-            filteredData = mockDetailData.filter(item => item.grpCd === selectedGrpCd);
+          // 전체 조회는 각 그룹별로 조회해서 합치기
+          const groups = await commonCodeService.getAllCodeMst();
+          setMasterGroups(groups);
+          const allDetails: CommonCodeDetail[] = [];
+          for (const group of groups) {
+            const details = await commonCodeService.getCodeDtlByGrpCd(group.grpCd);
+            allDetails.push(...details);
           }
-          setItems(filteredData);
+          setItems(allDetails);
         }
-        setLoading(false);
-      }, 500);
+      }
     } catch (error) {
       console.error('데이터 로드 실패:', error);
+      alert('데이터를 불러오는데 실패했습니다.');
+    } finally {
       setLoading(false);
     }
   }, [type, selectedGrpCd]);
+
+  // 마스터 그룹 목록 로드
+  useEffect(() => {
+    const loadMasterGroups = async () => {
+      try {
+        const groups = await commonCodeService.getAllCodeMst();
+        setMasterGroups(groups);
+      } catch (error) {
+        console.error('마스터 그룹 로드 실패:', error);
+      }
+    };
+    
+    if (type === 'detail') {
+      loadMasterGroups();
+    }
+  }, [type]);
 
   useEffect(() => {
     loadData();
@@ -144,24 +86,50 @@ const CommonCodeManagement: React.FC<CommonCodeManagementProps> = ({ type }) => 
   const handleDelete = async (item: CommonCodeMaster | CommonCodeDetail) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
-        // TODO: 실제 API 호출
-        console.log('삭제:', item);
+        if (type === 'master') {
+          const master = item as CommonCodeMaster;
+          await commonCodeService.deleteCodeMst(master.grpCd);
+          alert('코드 그룹이 삭제되었습니다.');
+        } else {
+          const detail = item as CommonCodeDetail;
+          await commonCodeService.deleteCodeDtl(detail.cd);
+          alert('상세 코드가 삭제되었습니다.');
+        }
         loadData();
-      } catch (error) {
+      } catch (error: any) {
         console.error('삭제 실패:', error);
+        alert(error.response?.data?.message || '삭제에 실패했습니다.');
       }
     }
   };
 
   const handleFormSubmit = async (data: CommonCodeMasterRequest | CommonCodeDetailRequest) => {
     try {
-      // TODO: 실제 API 호출
-      console.log('저장:', data);
+      if (type === 'master') {
+        const masterData = data as CommonCodeMasterRequest;
+        if (editingItem) {
+          await commonCodeService.updateCodeMst((editingItem as CommonCodeMaster).grpCd, masterData);
+          alert('코드 그룹이 수정되었습니다.');
+        } else {
+          await commonCodeService.createCodeMst(masterData);
+          alert('코드 그룹이 생성되었습니다.');
+        }
+      } else {
+        const detailData = data as CommonCodeDetailRequest;
+        if (editingItem) {
+          await commonCodeService.updateCodeDtl((editingItem as CommonCodeDetail).cd, detailData);
+          alert('상세 코드가 수정되었습니다.');
+        } else {
+          await commonCodeService.createCodeDtl(detailData);
+          alert('상세 코드가 생성되었습니다.');
+        }
+      }
       setShowForm(false);
       setEditingItem(null);
       loadData();
-    } catch (error) {
+    } catch (error: any) {
       console.error('저장 실패:', error);
+      alert(error.response?.data?.message || '저장에 실패했습니다.');
     }
   };
 
@@ -250,7 +218,7 @@ const CommonCodeManagement: React.FC<CommonCodeManagementProps> = ({ type }) => 
               className="group-select"
             >
               <option value="">전체 그룹</option>
-              {mockMasterData.map(group => (
+              {masterGroups.map(group => (
                 <option key={group.grpCd} value={group.grpCd}>
                   {group.grpCd} - {group.grpNm}
                 </option>
