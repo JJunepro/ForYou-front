@@ -1,10 +1,10 @@
 import api from './api';
-import type { 
-  CommonCodeMaster, 
-  CommonCodeDetail, 
-  CommonCodeMasterRequest, 
-  CommonCodeDetailRequest,
-  ApiResponse 
+import type {
+  CommonCodeMaster,
+  CommonCodeDetail,
+  CommonCodeMasterRequest,
+  CommonCodeDetailRequest
+  // ApiResponse 제거
 } from '@/types/api';
 
 // 공통코드 관련 API 서비스
