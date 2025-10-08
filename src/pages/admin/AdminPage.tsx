@@ -14,8 +14,10 @@ const AdminPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const handleLogout = () => {
+    // 모든 인증 관련 데이터 제거
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('userEmail');
     navigate('/');
   };
 

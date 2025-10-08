@@ -164,3 +164,7 @@ export interface SignupRequest {
   memNick: string;         // 닉네임 - 사용자 표시명
   memPwd: string;          // 비밀번호 - 암호화되어 저장됨
 }
+
+export interface AdminUsers{
+
+}
