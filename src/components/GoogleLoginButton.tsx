@@ -1,5 +1,6 @@
 // Google 로그인 버튼 컴포넌트
 import React from 'react';
+import { AuthService } from '@/services/authService';
 
 // Google 아이콘 SVG
 const GoogleIcon = () => (
@@ -18,8 +19,8 @@ interface GoogleLoginButtonProps {
 
 const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ className }) => {
   const handleGoogleLogin = () => {
-    // Spring Boot OAuth2 엔드포인트로 리다이렉트
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    // authService를 통해 Google 로그인 시작
+    AuthService.initiateGoogleLogin();
   };
 
   return (

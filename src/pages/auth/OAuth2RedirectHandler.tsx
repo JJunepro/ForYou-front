@@ -1,6 +1,7 @@
 // OAuth2 리다이렉트 처리 페이지
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { AuthService } from '@/services/authService';
 
 const OAuth2RedirectHandler = () => {
   const [searchParams] = useSearchParams();
@@ -9,27 +10,30 @@ const OAuth2RedirectHandler = () => {
   useEffect(() => {
     const token = searchParams.get('token');
     const email = searchParams.get('email');
+    const memKey = searchParams.get('memKey');
+    const name = searchParams.get('name');
 
-    if (token) {
-      // 로컬 스토리지에 JWT 토큰 저장
-      localStorage.setItem('token', token);
-      localStorage.setItem('userEmail', email || '');
+    if (token && email) {
+      try {
+        // authService를 통해 OAuth2 리다이렉트 처리
+        const authResponse = AuthService.handleOAuth2Redirect({
+          token,
+          email,
+          memKey: memKey || undefined,
+          name: name || undefined
+        });
 
-      // AdminPage와 호환되도록 user 객체도 저장
-      const user = {
-        memEmail: email || '',
-        memNick: email?.split('@')[0] || '사용자', // 이메일 앞부분을 닉네임으로 사용
-        memStatus: 'Y',
-        provider: 'google'
-      };
-      localStorage.setItem('user', JSON.stringify(user));
+        console.log('Google 로그인 성공!');
+        console.log('Token:', authResponse.token);
+        console.log('User:', authResponse.user);
 
-      console.log('Google 로그인 성공!');
-      console.log('Token:', token);
-      console.log('Email:', email);
-
-      // 관리자 페이지로 이동
-      navigate('/admin', { replace: true });
+        // 관리자 페이지로 이동
+        navigate('/admin', { replace: true });
+      } catch (error) {
+        console.error('로그인 처리 중 오류:', error);
+        alert('로그인 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+        navigate('/', { replace: true });
+      }
     } else {
       // 로그인 실패 처리
       console.error('로그인 실패: 토큰을 받지 못했습니다.');
