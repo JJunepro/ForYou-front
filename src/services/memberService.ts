@@ -1,5 +1,5 @@
 import api from './api';
-import type { MemberResponse, ApiResponse } from '@/types/api';
+import type { MemberResponse } from '@/types/api';
 
 // 회원 관련 API 서비스
 export const memberService = {
