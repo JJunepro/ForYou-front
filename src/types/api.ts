@@ -115,6 +115,16 @@ export interface User {
   updDt: string;           // 수정일시
 }
 
+// 회원 응답 타입 (MemberResponse)
+export interface MemberResponse {
+  memKey: number;          // 회원 고유 식별자
+  memEmail: string;        // 회원 이메일
+  memNick: string;         // 회원 닉네임
+  memStatus: 'Y' | 'N';    // 회원 상태 (Y=활성, N=비활성)
+  regDt: string;           // 등록일시
+  updDt: string;           // 수정일시
+}
+
 // 메뉴 관련 타입 (tb_menu_mst)
 export interface Menu {
   menuId: string;          // 메뉴 ID (Primary Key)

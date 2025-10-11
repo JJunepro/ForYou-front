@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import AdminMain from './AdminMain';
 import CommonCodePage from './commoncode/CommonCodePage';
 import MenuManagementPage from './menu/MenuManagementPage';
+import MemberManagementPage from './member/MemberManagementPage';
 import type { Menu } from '@/types/api';
 import { menuService } from '@/services/menuService';
 import '@/styles/pages/admin/AdminPage.css';
@@ -181,7 +182,7 @@ const AdminPage: React.FC = () => {
             <Route path="/" element={<AdminMain />} />
             <Route path="/common-code" element={<CommonCodePage />} />
             <Route path="/menus" element={<MenuManagementPage />} />
-            <Route path="/users" element={<div className="coming-soon">사용자 관리 기능은 준비 중입니다</div>} />
+            <Route path="/users" element={<MemberManagementPage />} />
             <Route path="/settings" element={<div className="coming-soon">시스템 설정 기능은 준비 중입니다</div>} />
           </Routes>
         </main>
