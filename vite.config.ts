@@ -27,5 +27,7 @@ export default defineConfig({
         secure: false,
       },
     },
+    // SPA fallback 설정 (404 방지)
+    historyApiFallback: true,
   },
 })

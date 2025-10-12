@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 hook
 import type { LoginRequest } from '@/types/api'; // 로그인 요청 타입 정의
 import GoogleLoginButton from '@/components/GoogleLoginButton'; // Google 로그인 버튼
+import KakaoLoginButton from '@/components/KakaoLoginButton'; // 카카오 로그인 버튼
 import '@/styles/pages/auth/Login.css'; // 로그인 페이지 스타일
 
 // 로그인 컴포넌트 정의
@@ -130,7 +131,10 @@ const Login: React.FC = () => {
             <div style={{ flex: 1, borderBottom: '1px solid #ddd' }}></div>
           </div>
 
-          <GoogleLoginButton />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <KakaoLoginButton />
+            <GoogleLoginButton />
+          </div>
         </div>
 
         <div className="login-actions">
